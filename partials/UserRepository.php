@@ -6,9 +6,11 @@ require_once './partials/Geo.php';
 
 class UserRepository {
     private $data;
+    private $path;
 
     public function __construct($path) {
-        $jsonString = file_get_contents($path);
+        $this->path = $path;
+        $jsonString = file_get_contents($this->path);
         $this->data = json_decode($jsonString, true);
     }
 
@@ -20,7 +22,7 @@ class UserRepository {
     public function getOriginalData() {
         $jsonString = file_get_contents('./dataset/ousers.json');
         // Save the original data to the users.json file
-        file_put_contents('./dataset/users.json', $jsonString);
+        file_put_contents($this->path, $jsonString);
     }
 
     // Method to add new data to the JSON file
@@ -64,7 +66,7 @@ class UserRepository {
         $updatedJsonString = json_encode($this->data, JSON_PRETTY_PRINT);
 
         // Save the updated JSON string back to the file
-        file_put_contents('./dataset/users.json', $updatedJsonString);
+        file_put_contents($this->path, $updatedJsonString);
     }
 
     // Method to remove data from the JSON file
@@ -86,7 +88,7 @@ class UserRepository {
 
             // Save the updated data back to the JSON file
             $jsonString = json_encode($this->data, JSON_PRETTY_PRINT);
-            file_put_contents('./dataset/users.json', $jsonString);
+            file_put_contents($this->path, $jsonString);
         }
     }
 }
